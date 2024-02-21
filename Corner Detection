@@ -1,0 +1,46 @@
+# Corner Detection
+
+import sys
+import cv2
+import numpy as npimport sys
+import cv2
+import numpy as np
+import os
+!pip install numpy
+!pip install Pillow
+!pip install google-colab
+!pip install opencv-python
+import google.colab
+from PIL import Image
+from pathlib import Path
+from google.colab.patches import cv2_imshow
+print(input_file)
+input_file = '/content/box.jpeg'
+img = np.array(Image.open("box.jpeg"))
+img = cv2.imread(input_file)
+input_file = sys.argv[1]
+img = cv2.imread(input_file)
+%reload_ext autoreload
+img = cv2.imread('/content/box.jpeg')
+if img is None:
+    print("Error: Image not found")
+    exit()
+img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+if img_gray is None:
+    print('Error: Conversion failed')
+    exit()
+img_gray = np.float32(img_gray)
+if img_gray is None:
+    print('Error: Conversion failed')
+    exit()
+# Harris corner detector
+img_harris = cv2.cornerHarris(img_gray, 7, 5, 0.04)
+# Resultant image is dilated to mark the corners
+img_harris = cv2.dilate(img_harris, None)
+# Threshold the image
+img[img_harris > 0.01 * img_harris.max()] = [0, 0, 0]
+# Use cv2_imshow instead of cv2.imshow
+cv2_imshow(img)
+cv2.waitKey()
+
+
